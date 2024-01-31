@@ -1,0 +1,171 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: back-app
+  namespace: yomankum
+type: Opaque
+data:
+  # jdbc:mysql://cube.3trolls.me:13306/yomankum?useSSL=false&characterEncoding=UTF-8
+  data_url: amRiYzpteXNxbDovL215c3FsLnlvbWFua3VtOjMzMDYveW9tYW5rdW0/dXNlU1NMPWZhbHNlJmNoYXJhY3RlckVuY29kaW5nPVVURi04JmFsbG93UHVibGljS2V5UmV0cmlldmFsPXRydWU=
+  # in8282
+  data_password: aW44Mjgy
+  # VVrviPtw50xif3PUsvby
+  naver_client_id: VlZydmlQdHc1MHhpZjNQVXN2Ynk=
+  # xGKXY5vHJP
+  naver_client_secret: eEdLWFk1dkhKUA==
+  # de846ae383b9c41af8d14bcc90700379
+  kakao_client_id: ZGU4NDZhZTM4M2I5YzQxYWY4ZDE0YmNjOTA3MDAzNzk=
+  # otrfLjd6BmlQkRdBGyVSfsNbFDbD1G8t
+  kakao_client_secret: b3RyZkxqZDZCbWxRa1JkQkd5VlNmc05iRkRiRzh0
+  # y0mankum
+  mail_username: eTBtYW5rdW0=
+  # yomankum1004
+  mail_password: eW9tYW5rdW0xMDA0
+  # y0mankum@naver.com
+  mail_id: eTBtYW5rdW1AbmF2ZXIuY29t
+  # in8282
+  mysql_root_password: aW44Mjgy
+  # yomankum
+  mysql_user: eW9tYW5rdW0= 
+  # in8282
+  mysql_password: aW44Mjgy
+  # yomankum
+  mysql_database: eW9tYW5rdW0=
+  # cube.3trolls.me
+  redis_host: Y3ViZS4zdHJvbGxzLm1l
+  # 16379
+  redis_port: MTYzNzk=
+  # yomankum1004
+  redis_password: eW9tYW5rdW0xMDA0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yomankum-back-deployment
+  namespace: yomankum  
+  labels:
+    app: yomankum-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yomankum-back
+  template:
+    metadata:
+      labels:
+        app: yomankum-back
+    spec:
+      containers:
+      - name: back-app
+        image: harbor.3trolls.me/yomankum/back/back-app:a19a6584
+        command: ["java"]
+        args: ["-jar", "-Dspring.profiles.active=prod", "yomankum.jar"]
+        env:
+        - name: DATA_URL
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: back-app
+          #     key: data_url
+          value: "jdbc:mysql://mysql.yomankum:3306/yomankum?useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true"
+        - name: DATA_USERNAME
+          value: yomankum
+        - name: DATA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: data_password
+        - name: NAVER_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: naver_client_id
+        - name: NAVER_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: naver_client_secret
+        - name: KAKAO_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: kakao_client_id
+        - name: KAKAO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: kakao_client_secret
+        - name: MAIL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mail_username
+        - name: MAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mail_password
+        - name: MAIL_ID
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mail_id
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mysql_root_password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mysql_user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mysql_password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: mysql_database
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: redis_host
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: redis_port
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: back-app
+              key: redis_password
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: harbor
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: yomankum-back-svc
+  namespace: yomankum
+spec:
+  type: NodePort
+  ports:
+  # - name: http
+  #   port: 80
+  #   targetPort: 8080
+  - port: 80
+    targetPort: 8080
+    # 선택적 필드
+    # 기본적으로 그리고 편의상 쿠버네티스 컨트롤 플레인은 포트 범위에서 할당한다(기본값: 30000-32767)
+    nodePort: 30007
+  selector:
+    app: yomankum-back
+---
