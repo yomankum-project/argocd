@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: yomankum-back-deployment
-  namespace: yomankum  
+  namespace: yomankum
   labels:
     app: yomankum-back
 spec:
@@ -16,95 +16,95 @@ spec:
         app: yomankum-back
     spec:
       containers:
-      - name: back-app
-        image: harbor.3trolls.me/yomankum/back/back-app:a19a6584
-        command: ["java"]
-        args: ["-jar", "-Dspring.profiles.active=prod", "yomankum.jar"]
-        env:
-        - name: DATA_URL
-          # valueFrom:
-          #   secretKeyRef:
-          #     name: back-app
-          #     key: data_url
-          value: "jdbc:mysql://mysql.yomankum:3306/yomankum?useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true"
-        - name: DATA_USERNAME
-          value: yomankum
-        - name: DATA_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: data_password
-        - name: NAVER_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: naver_client_id
-        - name: NAVER_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: naver_client_secret
-        - name: KAKAO_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: kakao_client_id
-        - name: KAKAO_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: kakao_client_secret
-        - name: MAIL_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mail_username
-        - name: MAIL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mail_password
-        - name: MAIL_ID
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mail_id
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mysql_root_password
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mysql_user
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mysql_password
-        - name: MYSQL_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: mysql_database
-        - name: REDIS_HOST
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: redis_host
-        - name: REDIS_PORT
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: redis_port
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: back-app
-              key: redis_password
-        ports:
-        - containerPort: 8080
+        - name: back-app
+          image: harbor.3trolls.me/yomankum/back/back-app:9fb608a8
+          command: ["java"]
+          args: ["-jar", "-Dspring.profiles.active=prod", "yomankum.jar"]
+          env:
+            - name: DATA_URL
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: back-app
+              #     key: data_url
+              value: "jdbc:mysql://mysql.yomankum:3306/yomankum?useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true"
+            - name: DATA_USERNAME
+              value: yomankum
+            - name: DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: data_password
+            - name: NAVER_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: naver_client_id
+            - name: NAVER_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: naver_client_secret
+            - name: KAKAO_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: kakao_client_id
+            - name: KAKAO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: kakao_client_secret
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mail_username
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mail_password
+            - name: MAIL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mail_id
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mysql_root_password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mysql_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mysql_password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: mysql_database
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: redis_host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: redis_port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: redis_password
+          ports:
+            - containerPort: 8080
       imagePullSecrets:
-      - name: harbor
+        - name: harbor
