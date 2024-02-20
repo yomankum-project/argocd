@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: back-app
-          image: harbor.3trolls.me/yomankum/back/back-app:fcca6261
+          image: harbor.3trolls.me/yomankum/back/back-app:fcf95aaf
           command: ["java"]
           args: ["-jar", "-Dspring.profiles.active=prod", "yomankum.jar"]
           env:
