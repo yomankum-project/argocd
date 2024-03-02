@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: front-app
-          image: harbor.3trolls.me/yomankum/front/front-app:b073243b
+          image: harbor.3trolls.me/yomankum/front/front-app:0d6d7d7f
           ports:
             - containerPort: 80
       imagePullSecrets:
