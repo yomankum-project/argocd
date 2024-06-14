@@ -104,6 +104,11 @@ spec:
                 secretKeyRef:
                   name: back-app
                   key: redis_password
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: back-app
+                  key: SECRET_KEY
           ports:
             - containerPort: 8080
       imagePullSecrets:
